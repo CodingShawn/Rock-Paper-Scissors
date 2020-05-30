@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script>
+        function computerPlay() {
+            computerChoice = Math.floor(Math.random() * Math.floor(3))
+            if (computerChoice == 0) {
+                return "Rock"
+            } else if (computerChoice == 1) {
+                return "Scissors"
+            } else if (computerChoice == 2) {
+                return "Paper"
+            }
+        }
+
+        function playRound(playerSelection, computerSelection) {
+            if (computerSelection == playerSelection) {
+                return "You both made the same choice. DRAW!"
+            } else if (computerSelection == "Rock" && playerSelection == "Paper" || 
+                    computerSelection == "Paper" && playerSelection == "Scissors" || 
+                    computerSelection == "Scissors" && playerSelection == "Rock") {
+                        return `${playerSelection} beats ${computerSelection}! You win!`
+            } else {
+                return `${playerSelection} can't win ${computerSelection}.. You lose...`
+            }
+        }
+
+        function game() {
+            for (let i = 0; i < 5; i++) {
+                while(true){
+                    playerChoice = prompt("Choose Rock, Paper or Scissors")
+                    formatPlayerChoice = playerChoice[0].toUpperCase() + playerChoice.substring(1).toLowerCase()
+                    if (!(formatPlayerChoice == "Rock" || formatPlayerChoice == "Paper" || formatPlayerChoice == "Scissors")) {
+                        console.log("Please choose Rock, Paper or Scissors only")
+                    } else break
+                }
+                computerChoice = computerPlay()
+                console.log(playRound(formatPlayerChoice, computerChoice))
+            }
+        }
+    </script>
+</head>
+
+</html>
