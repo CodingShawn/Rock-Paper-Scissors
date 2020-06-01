@@ -2,7 +2,49 @@
 <html lang="en">
 
 <head>
+    
+</head>
+<body>
+    <div id="container">
+        <div>
+            <button class="startGame" id="Rock">Choose rock!</button>
+            <button class="startGame" id="Paper">Choose paper!</button>
+            <button class="startGame" id="Scissors">Choose scissors!</button>
+        </div>
+        <div>
+            <div id="totalRounds">
+                Total Rounds:
+            </div>
+            <div id="playerScore">
+                Player's Score:
+            </div>
+            <div id="computerScore">
+                Computer's Score:
+            </div>
+        </div>
+        <div id="commentary">
+
+        </div>
+        <div id="announcement">
+
+        </div>
+    </div>
+
+</body>
+
+<footer>
     <script>
+        const choices = Array.from(document.querySelectorAll('.startGame'));
+        choices.forEach(choice => choice.addEventListener('click', playRound));
+        const commentary = document.querySelector('#commentary');
+        const announcement = document.querySelector('#announcement');
+        const totalRoundsText = document.querySelector('#totalRounds');
+        const playerScoreText = document.querySelector('#playerScore');
+        const computerScoreText = document.querySelector('#computerScore');
+        let totalRounds = 0;
+        let playerScore = 0;
+        let computerScore = 0;
+
         function computerPlay() {
             computerChoice = Math.floor(Math.random() * Math.floor(3))
             if (computerChoice == 0) {
@@ -14,32 +56,54 @@
             }
         }
 
-        function playRound(playerSelection, computerSelection) {
+        function updateText() {
+            totalRoundsText.textContent = `Total Rounds: ${totalRounds}`;
+            playerScoreText.textContent = `Player's Score: ${playerScore}`;
+            computerScoreText.textContent = `Computer's Score: ${computerScore}`;
+        }
+
+        function checkWinner(){
+            if (playerScore == 5) {
+                announcement.textContent = "You reached 5 points! YOU WIN!";
+                reset();
+            } else if (computerScore == 5) {
+                announcement.textContent = "The computer reached 5 points. You lose...";
+                reset();
+            }
+        }
+
+        function reset(){
+            totalRounds = 0;
+            playerScore = 0;
+            computerScore = 0;
+        }
+
+        function playRound() {
+            announcement.textContent = "";
+            computerSelection = computerPlay();
+            playerSelection = this.id;
             if (computerSelection == playerSelection) {
-                return "You both made the same choice. DRAW!"
+                commentary.textContent = "You both made the same choice. DRAW!"
+                totalRounds ++;
+                updateText();
             } else if (computerSelection == "Rock" && playerSelection == "Paper" || 
                     computerSelection == "Paper" && playerSelection == "Scissors" || 
                     computerSelection == "Scissors" && playerSelection == "Rock") {
-                        return `${playerSelection} beats ${computerSelection}! You win!`
+                        commentary.textContent = `${playerSelection} beats ${computerSelection}! You win!`
+                        totalRounds++;
+                        playerScore++;
+                        updateText();
             } else {
-                return `${playerSelection} can't win ${computerSelection}.. You lose...`
+                commentary.textContent = `${playerSelection} can't win ${computerSelection}.. You lose...`
+                totalRounds++;
+                computerScore++;
+                updateText();
             }
-        }
 
-        function game() {
-            for (let i = 0; i < 5; i++) {
-                while(true){
-                    playerChoice = prompt("Choose Rock, Paper or Scissors")
-                    formatPlayerChoice = playerChoice[0].toUpperCase() + playerChoice.substring(1).toLowerCase()
-                    if (!(formatPlayerChoice == "Rock" || formatPlayerChoice == "Paper" || formatPlayerChoice == "Scissors")) {
-                        console.log("Please choose Rock, Paper or Scissors only")
-                    } else break
-                }
-                computerChoice = computerPlay()
-                console.log(playRound(formatPlayerChoice, computerChoice))
-            }
+            checkWinner();
+
         }
     </script>
-</head>
 
+</footer>
 </html>
